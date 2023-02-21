@@ -1,16 +1,13 @@
 version: '3.9'
 services:
-  mariadb:
+  wordpressdb:
     image: mariadb:10.10
-    container_name: mariadb
+    container_name: wordpressdb
     hostname: mariadb
     networks:
       - wordpress
-    environment:
-      - MARIADB_DATABASE=assistant
-      - MARIADB_USER=wordpress
-      - MARIADB_PASSWORD=wordpress
-      - MARIADB_RANDOM_ROOT_PASSWORD=yes
+    env_file:
+      - .env/wordpressdb.env
 
   wordpress:    
     image: wordpress:6.1.1
@@ -18,28 +15,45 @@ services:
     hostname: wordpress
     networks:
       - wordpress
+    ports:
+      - 8080:80
     depends_on:
+      - keycloak
       - mariadb
       - web_api
       - signalr
+    env_file:
+      - .env/wordpress.env
 
-    environment:
-      - WORDPRESS_DB_HOST=mariadb
-      - WORDPRESS_DB_USER=wordpress
-      - WORDPRESS_DB_PASSWORD=wordpress
-      - WORDPRESS_DB_NAME=assistant
-      - WORDPRESS_TABLE_PREFIX=wp_
-    ports:
-      - 8080:80
+
+  keycloakdb:
+    image: mariadb:10.10
+    container_name: keycloakdb
+    hostname: keycloakdb
+    networks:
+      - auth
+    env_file:
+      - .env/keycloakdb.env
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.5
+    container_name: keycloak
+    hostname: keycloak
+    networks:
+      - auth
+      - backend
+      - frontend
+    env_file:
+      - .env/keycloak.env
   
   neo4j:
     image: neo4j:5.5.0
     container_name: neo4j
     hostname: neo4j
     networks:
-      - backend
-    environment:
-      - NEO4J_AUTH=neo4j/password
+      - Backend
+    env_file:
+      - .env/neo4j.env
     volumes:
       - ./data:/data
       - ./logs:logs
@@ -51,13 +65,14 @@ services:
     networks:
       - backend
       - frontend
+    ports:
+      - 8081:80
     depends_on:
+      - keycloak
       - neo4j
 
-    environment:
-      - DB_HOST=neo4j
-      - DB_USER=neo4j
-      - DB_PASSWORD=password
+    env_file:
+      - .env/webapi.env
 
   signalr:
     build: ./Backend/Signalr
@@ -66,14 +81,18 @@ services:
     networks:
       - backend
       - frontend
+    ports:
+      - 8082:80
     depends_on:
+      - keycloak
       - web-api
-      - neo4j
-    environment:
-      - API_HOST=web-api
+    env_file:
+      - .env/signalr.env
 
 networks:
   wordpress:
+    driver: bridge
+  auth:
     driver: bridge
   backend: 
     driver: bridge
