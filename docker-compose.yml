@@ -1,0 +1,81 @@
+version: '3.9'
+services:
+  mariadb:
+    image: mariadb:10.10
+    container_name: mariadb
+    hostname: mariadb
+    networks:
+      - wordpress
+    environment:
+      - MARIADB_DATABASE=assistant
+      - MARIADB_USER=wordpress
+      - MARIADB_PASSWORD=wordpress
+      - MARIADB_RANDOM_ROOT_PASSWORD=yes
+
+  wordpress:    
+    image: wordpress:6.1.1
+    container_name: wordpress
+    hostname: wordpress
+    networks:
+      - wordpress
+    depends_on:
+      - mariadb
+      - web_api
+      - signalr
+
+    environment:
+      - WORDPRESS_DB_HOST=mariadb
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=assistant
+      - WORDPRESS_TABLE_PREFIX=wp_
+    ports:
+      - 8080:80
+  
+  neo4j:
+    image: neo4j:5.5.0
+    container_name: neo4j
+    hostname: neo4j
+    networks:
+      - backend
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - ./data:/data
+      - ./logs:logs
+
+  web-api:
+    build: ./Backend/WebApi/
+    container_name: web-api
+    hostname: web-api
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - neo4j
+
+    environment:
+      - DB_HOST=neo4j
+      - DB_USER=neo4j
+      - DB_PASSWORD=password
+
+  signalr:
+    build: ./Backend/Signalr
+    container_name: signalr
+    hostname: signalr
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - web-api
+      - neo4j
+    environment:
+      - API_HOST=web-api
+
+networks:
+  wordpress:
+    driver: bridge
+  backend: 
+    driver: bridge
+  frontend:
+    driver: bridge
