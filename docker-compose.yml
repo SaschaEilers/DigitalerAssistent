@@ -19,8 +19,8 @@ services:
       - 8080:80
     depends_on:
       - keycloak
-      - mariadb
-      - web_api
+      - wordpressdb
+      - web-api
       - signalr
     env_file:
       - .env/wordpress.env
@@ -45,21 +45,26 @@ services:
       - frontend
     env_file:
       - .env/keycloak.env
+    ports:
+      - 8083:8080
+    command: start-dev
   
   neo4j:
     image: neo4j:5.5.0
     container_name: neo4j
     hostname: neo4j
     networks:
-      - Backend
+      - backend
     env_file:
       - .env/neo4j.env
     volumes:
       - ./data:/data
-      - ./logs:logs
+      - ./logs:/logs
 
   web-api:
-    build: ./Backend/WebApi/
+    build:
+      context: ./Backend
+      dockerfile: ./WebApi/Dockerfile
     container_name: web-api
     hostname: web-api
     networks:
@@ -75,7 +80,9 @@ services:
       - .env/webapi.env
 
   signalr:
-    build: ./Backend/Signalr
+    build: 
+      context: ./Backend
+      dockerfile: ./Signalr/Dockerfile
     container_name: signalr
     hostname: signalr
     networks:
