@@ -43,10 +43,12 @@ services:
       - auth
       - backend
       - frontend
-    env_file:
-      - .env/keycloak.env
     ports:
       - 8083:8080
+    depends_on:
+      - keycloakdb
+    env_file:
+      - .env/keycloak.env
     command: start-dev
   
   neo4j:

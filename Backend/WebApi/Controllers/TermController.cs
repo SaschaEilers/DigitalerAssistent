@@ -6,7 +6,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TermController : ControllerBase
+public sealed class TermController : ControllerBase
 {
     private readonly IDriver _context;
 
@@ -16,9 +16,8 @@ public class TermController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<Results<Ok<IServerInfo>, NotFound>> Test()
+    public async Task<Results<Ok, NotFound>> Test()
     {
-        var info = await _context.GetServerInfoAsync();
-        return TypedResults.Ok(info);
+        return TypedResults.Ok();
     }
 }

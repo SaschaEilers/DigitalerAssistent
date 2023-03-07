@@ -15,20 +15,21 @@ builder.Configuration.AddEnvironmentVariables(source =>
     source.Prefix = "NEO4J";
 });
 UriBuilder uriBuilder = new();
-Console.WriteLine(builder.Configuration.Sources.OfType<EnvironmentVariablesConfigurationSource>().FirstOrDefault(x => x.));
 builder.Configuration.Bind("NEO4J", uriBuilder);
 builder.Services.AddNeo4j(CreateNeoUri(uriBuilder));
+
+Console.WriteLine(uriBuilder);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
@@ -38,7 +39,7 @@ await app.RunAsync();
 
 static NeoSettings CreateNeoUri(UriBuilder builder)
 {
-    var user = builder.Password;
+    var user = builder.UserName;
     var password = builder.Password;
     builder.Password = string.Empty;
     builder.UserName = string.Empty;
