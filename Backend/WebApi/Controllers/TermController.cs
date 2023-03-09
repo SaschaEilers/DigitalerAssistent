@@ -16,8 +16,14 @@ public sealed class TermController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<Results<Ok, NotFound>> Test()
+    public async Task<Results<Ok<Term>, EmptyHttpResult>> GetTerms()
     {
-        return TypedResults.Ok();
+        return TypedResults.Ok(await _context.GetServerInfoAsync());
+    }
+    
+    [HttpPost]
+    public async Task<Results<Created<Term>, BadRequest>> CreateTerm()
+    {
+        
     }
 }
