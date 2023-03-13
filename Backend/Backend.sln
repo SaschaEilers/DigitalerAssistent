@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR", "SignalR\SignalR.csproj", "{4131CCD9-05B1-442F-92D1-0A9C0D0119B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.DB", "WebApi.DB\WebApi.DB.csproj", "{586D5D2E-A50A-4151-B71B-64152675EB57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Services", "WebApi.Services\WebApi.Services.csproj", "{2F401499-EF96-424C-9BED-B3F43E49D5AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{4131CCD9-05B1-442F-92D1-0A9C0D0119B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4131CCD9-05B1-442F-92D1-0A9C0D0119B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4131CCD9-05B1-442F-92D1-0A9C0D0119B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{586D5D2E-A50A-4151-B71B-64152675EB57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{586D5D2E-A50A-4151-B71B-64152675EB57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{586D5D2E-A50A-4151-B71B-64152675EB57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{586D5D2E-A50A-4151-B71B-64152675EB57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F401499-EF96-424C-9BED-B3F43E49D5AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F401499-EF96-424C-9BED-B3F43E49D5AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F401499-EF96-424C-9BED-B3F43E49D5AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F401499-EF96-424C-9BED-B3F43E49D5AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

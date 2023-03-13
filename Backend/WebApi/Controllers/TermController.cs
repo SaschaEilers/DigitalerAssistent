@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Neo4j.Driver;
+using WebApi.DB.Services;
 
 namespace WebApi.Controllers;
 
@@ -8,17 +9,17 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public sealed class TermController : ControllerBase
 {
-    private readonly IDriver _context;
+    private readonly IDatabaseService<Term> _context;
 
-    public TermController(IDriver context)
+    public TermController(IDatabaseService<Term> context)
     {
         _context = context;
     }
 
     [HttpGet]
-    public async Task<Results<Ok<Term>, EmptyHttpResult>> GetTerms()
+    public async Task<Results<Ok<IAsyncEnumerable<Term>>, EmptyHttpResult>> GetTerms()
     {
-        return TypedResults.Ok(await _context.GetServerInfoAsync());
+        return TypedResults.Ok(await _context.);
     }
     
     [HttpPost]

@@ -1,5 +1,5 @@
 ﻿#nullable enable
-namespace WebApi;
+namespace WebApi.DB.Configuration;
 
 public class NeoConfig
 {

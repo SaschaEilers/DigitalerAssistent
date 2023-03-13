@@ -1,7 +1,8 @@
 ﻿#nullable enable
+using Microsoft.Extensions.Logging;
 using Neo4j.Driver;
 
-namespace WebApi;
+namespace WebApi.DB.Configuration;
 
 public sealed class NeoContext : INeoContext,IAsyncDisposable
 {

@@ -1,7 +1,7 @@
 ﻿#nullable enable
 namespace WebApi;
 
-public class Term
+public sealed record Term
 {
     public required string Value { get; set; }
     public required decimal Weight { get; set; }
